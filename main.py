@@ -50,7 +50,36 @@ class Picture(Area):
         mw.blit(self.image, (self.rect.x, self.rect.y))
 
 
+ball = Picture('ball.png', 160, 200, 50, 50)
+platform = Picture('platform.png', racket_x, racket_y, 100, 30)
+
+start_x = 5
+start_y = 5
+
+count = 9
+monsters = []
+for j in range(3):
+    y = start_y + (55 * j)
+    x = start_x + (27.5 * j) 
+    for i in range (count):
+        d = Picture('enemy.png', x, y, 50, 50)
+        monsters.append(d)
+        x = x + 55
+    count = count - 1
+
 while not game_over:
+    ball.fill()
+    platform.fill()
+        
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            game_over = True
+
+    for m in monsters:
+        m.draw()
+
+    platform.draw()
+    ball.draw()
 
     pygame.display.update()
     clock.tick(40)
