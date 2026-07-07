@@ -13,6 +13,8 @@ racket_x = 200
 racket_y = 330
 move_right = False
 move_left = False
+speed_x = 3
+speed_y = 3
 '''
 Bandera del final del juego
 '''
@@ -89,7 +91,15 @@ while not game_over:
         platform.rect.x += 3
     if move_left:
         platform.rect.x -= 3
-    
+    ball.rect.x += speed_x
+    ball.rect.y += speed_y
+    if ball.rect.y < 0:
+        speed_y *= -1
+    if ball.rect.x > 450 or ball.rect.x < 0:
+        speed_x *= -1
+    if ball.colliderect(platform.rect):
+        speed_y *= -1
+
     for m in monsters:
         m.draw()
 
