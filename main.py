@@ -11,7 +11,8 @@ Variables de las coordenadas de la plataforma
 '''
 racket_x = 200
 racket_y = 330
-
+move_right = False
+move_left = False
 '''
 Bandera del final del juego
 '''
@@ -74,7 +75,21 @@ while not game_over:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_over = True
-
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                move_right = True
+            if event.key == pygame.K_LEFT:
+                move_left = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_RIGHT:
+                move_right = False
+            if event.key == pygame.K_LEFT:
+                move_left = False
+    if move_right:
+        platform.rect.x += 3
+    if move_left:
+        platform.rect.x -= 3
+    
     for m in monsters:
         m.draw()
 
