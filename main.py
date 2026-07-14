@@ -52,6 +52,17 @@ class Picture(Area):
     def draw(self):
         mw.blit(self.image, (self.rect.x, self.rect.y))
 
+class Label(Area):
+    '''
+    Clase para objetos de texto
+    '''
+    def set_text(self, text, fsize=12, text_color=(0, 0, 0)):
+        self.image = pygame.font.SysFont('verdana', fsize).render(text, True, text_color)
+    def draw(self, shift_x=0, shift_y=0):
+        self.fill()
+        mw.blit(self.image, (self.rect.x + shift_x, self.rect.y + shift_y))
+
+
 
 ball = Picture('ball.png', 160, 200, 50, 50)
 platform = Picture('platform.png', racket_x, racket_y, 100, 30)
@@ -99,9 +110,25 @@ while not game_over:
         speed_x *= -1
     if ball.colliderect(platform.rect):
         speed_y *= -1
+    if len(monsters) == 0:
+        win_text = Label(150,150,50,50,back)
+        win_text.set_text('GANASTE',60, (0,200,0))
+        win_text.draw(10, 10)
+        game_over = True
 
-    for m in monsters:
-        m.draw()
+    if ball.rect.y > 350:
+        lose_text = Label(150,150,50,50,back)
+        lose_text.set_text('PERDISTE',60, (255,0,0))
+        lose_text.draw(10, 10)
+        game_over = True
+
+
+    for monster in monsters:
+        monster.draw()
+        if monster.colliderect(ball.rect):
+            monsters.remove(monster)
+            monster.fill()
+            speed_y *= -1
 
     platform.draw()
     ball.draw()
